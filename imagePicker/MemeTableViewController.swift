@@ -8,7 +8,8 @@
 
 import UIKit
 
-class MemeTableViewController: UITableViewController {
+class MemeTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
        var memes: [Meme]! {
         let object = UIApplication.shared.delegate
         let appDelegate = object as! AppDelegate
@@ -18,23 +19,24 @@ class MemeTableViewController: UITableViewController {
 
     
     override func viewDidLoad() {
-
     }
     
     override func viewWillAppear(_ animated: Bool) {
-    
+        let tableView = UITableView()
+        tableView.delegate = self
+        tableView.reloadData()
     }
 
-    @objc func push(){
+    @IBAction func pushToView(_ sender: Any) {
         let controller = storyboard?.instantiateViewController(identifier: "ViewController") as! ViewController
-        present(controller, animated: true, completion: nil)
+               present(controller, animated: true, completion: nil)
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return memes.count
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "tableCell")
         let memes = self.memes[indexPath.row]
         cell?.textLabel?.text = memes.topText
